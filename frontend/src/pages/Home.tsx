@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardsFilmes, Filme } from '../components/CardsFilme';
+import { FormFilme } from '../components/FormFilme';
 import { Header } from '../components/Header';
 import api from '../services/api';
 import '../styles/home.css';
 
 export function Home() {
   const [filmes, setFilmes] = useState<any[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState<number>(1);
 
   const navigate = useNavigate();
 
   async function handleCreateProfissional() {
     navigate('/professional/new');
   }
+  const handleListItemClick = (index: number) => {
+    setSelectedIndex(index);
+  };
 
   useEffect(() => {
     api
@@ -46,40 +51,50 @@ export function Home() {
       <div className="container-buttons">
         <button
           className="button-create-profissional"
-          onClick={handleCreateProfissional}
+          onClick={() => {
+            handleListItemClick(1);
+          }}
         >
           Estreias
         </button>
         <button
           className="button-create-profissional"
-          onClick={handleCreateProfissional}
+          onClick={() => {
+            handleListItemClick(1);
+          }}
         >
           Filmes
         </button>
         <button
           className="button-create-profissional"
-          onClick={handleCreateProfissional}
+          onClick={() => {
+            handleListItemClick(2);
+          }}
         >
           Cadastrar Filme
         </button>
         <button
           className="button-create-profissional"
-          onClick={handleCreateProfissional}
+          onClick={() => {
+            handleListItemClick(1);
+          }}
         >
           Cadastrar Sessão
         </button>
       </div>
 
-      <main className="list-profissional">
-        {filmes.length === 0 ? (
-          <p className="no-profissional">Nenhum filme cadastrado.</p>
-        ) : (
-          <>
-            {filmes.map((filme: Filme) => {
-              return <CardsFilmes filme={filme} key={filme.id_filme} />;
-            })}
-          </>
-        )}
+      <main className="content__container">
+        {selectedIndex === 1 &&
+          (filmes.length === 0 ? (
+            <p className="no-profissional">Nenhum filme cadastrado.</p>
+          ) : (
+            <>
+              {filmes.map((filme: Filme) => {
+                return <CardsFilmes filme={filme} key={filme.id_filme} />;
+              })}
+            </>
+          ))}
+        {selectedIndex === 2 && <FormFilme />}
       </main>
     </div>
   );
