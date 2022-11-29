@@ -1,9 +1,6 @@
 import api from '../../services/api';
-import InputMask from 'react-input-mask';
-
-import fileIcon from '../../assets/file.svg';
 import atencaoIcon from '../../assets/atencao.svg';
-
+import Switch from '@mui/material/Switch';
 import './style.css';
 import { Button } from '../Button';
 import { FormEvent, useState } from 'react';
@@ -16,10 +13,15 @@ export function FormFilme() {
   const [whatsapp, setWhatsapp] = useState('');
   const [profession, setProfession] = useState('');
   const [bio, setBio] = useState('');
+  const [isEstreia, setIsEstreia] = useState(true);
+
+  const handleEstreia = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsEstreia(event.target.checked);
+  };
 
   const navigation = useNavigate();
 
-  function handleCreateProfessional(e: FormEvent) {
+  function handleCreateFilme(e: FormEvent) {
     e.preventDefault();
 
     api
@@ -43,10 +45,10 @@ export function FormFilme() {
 
   return (
     <div className="container-form">
-      <h1>Dados Pessoais</h1>
+      <h1>Dados do Filme</h1>
       <div className="separator"></div>
-      <form onSubmit={handleCreateProfessional}>
-        <label htmlFor="Name">Nome Completo</label>
+      <form onSubmit={handleCreateFilme}>
+        <label htmlFor="Name">Nome</label>
         <input
           type="text"
           id="Name"
@@ -55,56 +57,58 @@ export function FormFilme() {
             setName(e.target.value);
           }}
         />
-        <label htmlFor="Cpf">CPF</label>
-        <InputMask
-          mask="999.999.999-99"
-          id="Cpf"
-          value={cpf}
-          onChange={e => {
-            setCpf(e.target.value);
-          }}
-        />
-        <label htmlFor="Birthday">Data de nascimento</label>
-        <InputMask
-          mask="99/99/9999"
-          id="Birthday"
-          value={birthday}
-          onChange={e => {
-            setBirthday(e.target.value);
-          }}
-        />
-        <label htmlFor="Whats">Whatsapp</label>
-        <InputMask
-          mask="(99)99999-9999"
-          id="Whats"
-          value={whatsapp}
-          onChange={e => {
-            setWhatsapp(e.target.value);
-          }}
-        />
-        <label htmlFor="Photo" id="file">
-          <p>Link da sua foto</p>
-          <div>
-            <img src={fileIcon} />
-          </div>
-        </label>
-        <input type="file" id="Photo" />
-        <label htmlFor="Profession">Profissão</label>
+        <label htmlFor="Ator">Atores principais</label>
         <input
           type="text"
-          id="Profession"
-          value={profession}
+          id="Ator"
+          value={name}
           onChange={e => {
-            setProfession(e.target.value);
+            setName(e.target.value);
           }}
         />
-        <label htmlFor="Bio">Biografia</label>
-        <textarea
-          id="Bio"
-          value={bio}
+        <label htmlFor="Genero">Genero</label>
+        <input
+          type="text"
+          id="Genero"
+          value={name}
           onChange={e => {
-            setBio(e.target.value);
+            setName(e.target.value);
           }}
+        />
+        <label htmlFor="Censura">Censura</label>
+        <input
+          type="text"
+          id="Censura"
+          value={name}
+          onChange={e => {
+            setName(e.target.value);
+          }}
+        />
+        <label htmlFor="Duracao">Duracao</label>
+        <input
+          type="text"
+          id="Duracao"
+          value={name}
+          onChange={e => {
+            setName(e.target.value);
+          }}
+        />
+        <label htmlFor="Empresa">Empresa</label>
+        <input
+          type="text"
+          id="Empresa"
+          value={name}
+          onChange={e => {
+            setName(e.target.value);
+          }}
+        />
+        <label htmlFor="Estreia">Estreia</label>
+        <Switch
+          id="Estreia"
+          className="input-switch"
+          checked={isEstreia}
+          onChange={handleEstreia}
+          inputProps={{ 'aria-label': 'controlled' }}
         />
         <div id="submit">
           <div id="content-submit">

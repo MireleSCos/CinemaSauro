@@ -106,3 +106,7 @@ textarea {
   font-size: 1.4rem;
   color: var(--gray-light);
 }
+
+.input-switch {
+  margin: 0.8rem 6.2rem 3.4rem;
+}
