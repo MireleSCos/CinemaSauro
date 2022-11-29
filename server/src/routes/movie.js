@@ -12,12 +12,17 @@ router.get("/", async (req, res) => {
 });
 
 //Listar todas as estreias
-router.get("/debut", async (req, res) => {
+router.get("/estreia", async (req, res) => {
+  const { rows } = await db.query("SELECT * FROM filme WHERE isEstreia=true");
+
+  res.status(201).send(rows);
 });
 
 //Busca filme pelo id
 router.get("/:id", async (req, res) => {
-  
+  const { rows } = await db.query("SELECT * FROM filme WHERE id=$1", [req.params.id]);
+
+  res.status(201).send(rows[0]);
 });
 
 //Cadastra filme novo
