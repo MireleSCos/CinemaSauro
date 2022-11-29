@@ -1,0 +1,18 @@
+.container-form #submit #content-submit button {
+    font-family: 'Archivo';
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 0;
+    color: var(--white);
+
+    background: var(--green);
+    height: 5rem;
+    padding: 1.5rem 4.2rem;
+    border-radius: .8rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.container-form #submit #content-submit button:hover {
+    opacity: 0.7;
+}

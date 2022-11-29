@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+html {
+  --background: #f0f0f7;
+  --header: #8257e5;
+  --white: #ffffff;
+  --gray-light: #9c98a6;
+  --gray-medium: #6a6180;
+  --gray-dark: #32264d;
+  --green: #04d361;
+  --card-bottom: #fafafc;
+  --border-form: #e6e6f0;
+
+  font-size: 62.5%;
+}
+
+body {
+  height: 100vh;
+  background: var(--background);
+}
+
+body,
+button,
+input,
+textarea {
+  /* clamp - intervalo de tamanho */
+  font-size: clamp(14px, 1.6rem, 2vw);
+  font-family: 'Archivo', sans-serif;
+  font-size: 400;
+}
+
+@media screen and (max-width: 1080px) {
+  html {
+    font-size: 62.5%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 56.25%;
+  }
+}

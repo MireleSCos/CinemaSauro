@@ -1,0 +1,104 @@
+#content {
+    background: var(--white);
+    width: 43vw;
+    height: 45vh;
+    border: 1px solid #E6E6F0 ;
+    border-radius: .8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2.4rem;
+}
+
+#profissional-content {
+    background: var(--white);
+    height: 72%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 3.2rem;
+    border-radius: .8rem;
+    max-width: 100%;
+}
+
+#profissional-content .bio {
+    font-family: 'Poppins';
+    font-size: clamp(14px, 1.6rem, 2vw);
+    font-weight: 400;
+    color: var(--gray-medium);
+    max-height: 70%;
+}
+
+#profissional-content .profissional-datas {
+    margin-bottom: 3.2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+#profissional-content .profissional-datas footer {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    gap: 2.4rem;
+}
+
+#profissional-content .profissional-datas footer img{
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+}
+
+#profissional-content .profissional-datas footer div h2 {
+    font-family: 'Archivo';
+    font-size: clamp(1.4rem, 2.4rem, 2vw);
+    font-weight: 700;
+    color: var(--gray-dark);
+}
+
+#profissional-content .profissional-datas footer div h3 {
+    font-family: 'Poppins';
+    font-size: clamp(14px, 1.6rem, 2vw);
+    font-weight: 400;
+    color: var(--gray-medium);
+}
+
+#profissional-content .profissional-datas .actions {
+    padding: 1.6rem;
+    width: 15%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: inherit;
+    gap: 1.6rem;
+}
+
+#profissional-contact {
+    background: var(--card-bottom);
+    width: 100%;
+    height: 28%;
+    border-radius: .8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+}
+
+#profissional-contact a {
+    font-family: 'Archivo';
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 0;
+    color: var(--white);
+
+    background: var(--green);
+    height: 5rem;
+    padding: 1.5rem 4.2rem;
+    border-radius: .8rem;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+
+    margin-right: 3.2rem;
+}
