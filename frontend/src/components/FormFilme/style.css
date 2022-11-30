@@ -42,9 +42,19 @@ textarea {
   border-radius: 0.8rem;
   background: var(--card-bottom);
 }
-
+.select-atores {
+  margin: 0.8rem 5.2rem 2.4rem;
+  height: 6.6rem;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  border-color: var(--border-form) !important;
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 1.4rem;
+}
 .container-form form label,
 input,
+select,
 InputMask,
 textarea {
   font-family: 'Poppins';

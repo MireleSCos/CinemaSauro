@@ -1,10 +1,12 @@
 import api from '../../services/api';
+import Select from 'react-select';
 import atencaoIcon from '../../assets/atencao.svg';
 import Switch from '@mui/material/Switch';
 import './style.css';
 import { Button } from '../Button';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
+import MultiValue from 'react-select/dist/declarations/src/components/MultiValue';
 
 export function FormFilme() {
   const [name, setName] = useState('');
@@ -18,6 +20,29 @@ export function FormFilme() {
   const handleEstreia = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsEstreia(event.target.checked);
   };
+  const handleAtores = (event: any) => {
+    console.log(event);
+  };
+
+  interface ColourOption {
+    readonly value: string;
+    readonly label: string;
+    readonly color: string;
+    readonly isFixed?: boolean;
+    readonly isDisabled?: boolean;
+  }
+  const colourOptions: readonly ColourOption[] = [
+    { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
+    { value: 'blue', label: 'Blue', color: '#0052CC', isDisabled: true },
+    { value: 'purple', label: 'Purple', color: '#5243AA' },
+    { value: 'red', label: 'Red', color: '#FF5630', isFixed: true },
+    { value: 'orange', label: 'Orange', color: '#FF8B00' },
+    { value: 'yellow', label: 'Yellow', color: '#FFC400' },
+    { value: 'green', label: 'Green', color: '#36B37E' },
+    { value: 'forest', label: 'Forest', color: '#00875A' },
+    { value: 'slate', label: 'Slate', color: '#253858' },
+    { value: 'silver', label: 'Silver', color: '#666666' },
+  ];
 
   const navigation = useNavigate();
 
@@ -58,13 +83,16 @@ export function FormFilme() {
           }}
         />
         <label htmlFor="Ator">Atores principais</label>
-        <input
-          type="text"
-          id="Ator"
-          value={name}
+        <Select
+          defaultValue={[colourOptions[2], colourOptions[3]]}
+          isMulti
+          name="colors"
+          options={colourOptions}
           onChange={e => {
-            setName(e.target.value);
+            handleAtores(e);
           }}
+          className="basic-multi-select select-atores"
+          classNamePrefix="select"
         />
         <label htmlFor="Genero">Genero</label>
         <input
