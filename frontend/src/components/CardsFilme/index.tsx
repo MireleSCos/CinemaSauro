@@ -18,9 +18,10 @@ export interface Filme {
 
 interface FilmeItemProps {
   filme: Filme;
+  fcompra: Function;
 }
 
-export function CardsFilmes({ filme }: FilmeItemProps) {
+export function CardsFilmes({ filme, fcompra }: FilmeItemProps) {
   return (
     <div id="content">
       <div id="profissional-content">
@@ -49,7 +50,14 @@ export function CardsFilmes({ filme }: FilmeItemProps) {
             </p>
           </div>
 
-          <button className="btn-comprar">Comprar</button>
+          <button
+            className="btn-comprar"
+            onClick={e => {
+              fcompra(filme.id_filme);
+            }}
+          >
+            Comprar
+          </button>
         </div>
       </div>
     </div>
