@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardsFilmes, Filme } from '../components/CardsFilme';
 import { FormFilme } from '../components/FormFilme';
+import { FormSessao } from '../components/FormSessao';
+
 import { Header } from '../components/Header';
 import api from '../services/api';
 import '../styles/home.css';
@@ -76,7 +78,7 @@ export function Home() {
         <button
           className="button-create-profissional"
           onClick={() => {
-            handleListItemClick(1);
+            handleListItemClick(3);
           }}
         >
           Cadastrar Sessão
@@ -95,6 +97,7 @@ export function Home() {
             </>
           ))}
         {selectedIndex === 2 && <FormFilme />}
+        {selectedIndex === 3 && <FormSessao />}
       </main>
     </div>
   );
