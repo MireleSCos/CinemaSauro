@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
 import cinema from '../../assets/cinema.jpg';
-import editImg from '../../assets/edit.svg';
+import { Button } from '../Button';
 
 import './style.css';
 import { useEffect, useState } from 'react';
@@ -33,17 +32,24 @@ export function CardsFilmes({ filme }: FilmeItemProps) {
               <h3>{filme.atores_principais}</h3>
             </div>
           </footer>
-          {/* <div className="actions">
-            <Link to={`/professional/edit/${filme.id_filme}`}>
-              <img src={editImg} alt="Editar" />
-            </Link>
-          </div> */}
         </div>
         <div className="bio">
           <p>Censura: {filme.censura}</p>
           <p>Categora: {filme.categoria}</p>
           <p>Duração: {filme.duracao}</p>
           <p>empresa: {filme.empresa}</p>
+        </div>
+      </div>
+      <div id="submit">
+        <div id="content-submit">
+          <div>
+            <p>
+              Preço
+              <span className="valor">R$ 20,00</span>
+            </p>
+          </div>
+
+          <button className="btn-comprar">Comprar</button>
         </div>
       </div>
     </div>

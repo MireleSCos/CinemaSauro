@@ -101,3 +101,50 @@
 
   margin-right: 3.2rem;
 }
+
+#content #submit {
+  background: var(--card-bottom);
+  width: 100%;
+  border-radius: 0 0 0.8rem 0.8rem;
+  border-top: 1px solid var(--border-form);
+}
+
+#content #submit #content-submit {
+  margin: 4rem 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#content #submit #content-submit div {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+#content #submit #content-submit div p {
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 1.4rem;
+  color: var(--gray-light);
+}
+#content .valor {
+  color: #8257e5;
+  font-size: 1.8rem;
+  margin-left: 1rem;
+  font-weight: bold;
+}
+#content .btn-comprar {
+  font-family: 'Archivo';
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 0;
+  color: var(--white);
+
+  background: var(--green);
+  height: 5rem;
+  padding: 1.5rem 4.2rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
