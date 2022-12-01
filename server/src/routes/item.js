@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
       nome,
     } = req.body;
 
-    const { rows } = await db.query(
+    await db.query(
       "INSERT INTO item (valor, nome) " +
         "VALUES ($1, $2)",
       [valor, nome]
