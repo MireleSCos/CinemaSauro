@@ -15,9 +15,10 @@ export interface Sessao {
 
 interface SessaoItemProps {
   sessao: Sessao;
+  fcompra: Function;
 }
 
-export function CardSessao({ sessao }: SessaoItemProps) {
+export function CardSessao({ sessao, fcompra }: SessaoItemProps) {
   return (
     <div id="content">
       <div id="profissional-content">
@@ -44,7 +45,14 @@ export function CardSessao({ sessao }: SessaoItemProps) {
             </p>
           </div>
 
-          <button className="btn-comprar">Finalizar compra</button>
+          <button
+            className="btn-comprar"
+            onClick={e => {
+              fcompra(sessao.id_sessao);
+            }}
+          >
+            Finalizar compra
+          </button>
         </div>
       </div>
     </div>

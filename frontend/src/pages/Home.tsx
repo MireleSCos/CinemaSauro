@@ -4,6 +4,8 @@ import { CardsFilmes, Filme } from '../components/CardsFilme';
 import { FormFilme } from '../components/FormFilme';
 import { FormSessao } from '../components/FormSessao';
 import { CardSessao, Sessao } from '../components/CardsSessao';
+import { CardsOferta, Oferta } from '../components/CardsOferta';
+
 import { Header } from '../components/Header';
 import api from '../services/api';
 import '../styles/home.css';
@@ -11,6 +13,8 @@ import '../styles/home.css';
 export function Home() {
   const [filmes, setFilmes] = useState<any[]>([]);
   const [sessoes, setSessoes] = useState<any[]>([]);
+  const [ofertas, setOfertas] = useState<any[]>([]);
+
   const [selectedIndex, setSelectedIndex] = useState<number>(1);
 
   useEffect(() => {
@@ -55,6 +59,23 @@ export function Home() {
           horario: '12:30',
         };
         setSessoes([tsessao]);
+        /* alert('Erro ao listar profissionais.'); */
+        let toferta = {
+          id_oferta: '123',
+          name: 'Pipoca',
+          valor: '50,00',
+        };
+        let toferta2 = {
+          id_oferta: '1234',
+          name: 'Coca-cola',
+          valor: '10,00',
+        };
+        let toferta3 = {
+          id_oferta: '222',
+          name: 'Fini',
+          valor: '10,00',
+        };
+        setOfertas([toferta, toferta2, toferta3]);
       });
   }, []);
 
@@ -65,6 +86,10 @@ export function Home() {
   const opComprarFilmeListSessions = (id_filme: number) => {
     console.log('id do filme:', id_filme);
     handleListItemClick(5);
+  };
+  const opComprarSessaoListOfertas = (id_sessao: number) => {
+    console.log('id da sessao:', id_sessao);
+    handleListItemClick(6);
   };
   return (
     <div id="home">
@@ -132,7 +157,23 @@ export function Home() {
           ) : (
             <>
               {sessoes.map((sessao: Sessao) => {
-                return <CardSessao sessao={sessao} key={sessao.id_sessao} />;
+                return (
+                  <CardSessao
+                    sessao={sessao}
+                    fcompra={opComprarSessaoListOfertas}
+                    key={sessao.id_sessao}
+                  />
+                );
+              })}
+            </>
+          ))}
+        {selectedIndex === 6 &&
+          (ofertas.length === 0 ? (
+            <p className="no-profissional">Nenhuma oferta cadastrado.</p>
+          ) : (
+            <>
+              {ofertas.map((oferta: Oferta) => {
+                return <CardsOferta oferta={oferta} key={oferta.id_oferta} />;
               })}
             </>
           ))}
