@@ -1,16 +1,42 @@
 import { useEffect, useState } from 'react';
+import { FormEvent } from 'react';
 
+import { Header } from '../components/Header';
 import { CardsFilmes, Filme } from '../components/CardsFilme';
 import { FormFilme } from '../components/FormFilme';
 import { FormSessao } from '../components/FormSessao';
 import { CardSessao, Sessao } from '../components/CardsSessao';
 import { CardsOferta, Oferta } from '../components/CardsOferta';
-
-import { Header } from '../components/Header';
-import api from '../services/api';
+import { Footer } from '../components/Footer';
+import atencaoIcon from '../assets/atencao.svg';
 import '../styles/home.css';
 
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
+import api from '../services/api';
+
+const styleModal = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: 'background.paper',
+  border: 'none',
+  boxShadow: 24,
+  borderRadius: 2,
+  padding: '0px',
+  p: 4,
+};
+
 export function Home() {
+  const [openModalCliente, setOpenModalCliente] = useState(false);
+  const handleOpenModalCliente = () => setOpenModalCliente(true);
+  const handleCloseModalCliente = () => setOpenModalCliente(false);
+
   const [filmes, setFilmes] = useState<any[]>([]);
   const [sessoes, setSessoes] = useState<any[]>([]);
   const [ofertas, setOfertas] = useState<any[]>([]);
@@ -78,7 +104,7 @@ export function Home() {
         setOfertas([toferta, toferta2, toferta3]);
       });
   }, []);
-
+  //Selecionar opção do header
   const handleListItemClick = (index: number) => {
     setSelectedIndex(index);
   };
@@ -91,6 +117,21 @@ export function Home() {
     console.log('id da sessao:', id_sessao);
     handleListItemClick(6);
   };
+
+  function handleCreateClienteCompra(e: FormEvent) {
+    e.preventDefault();
+
+    api
+      .post('professionals', {})
+      .then(() => {
+        alert('Cadastro realizado com sucesso!');
+        handleCloseModalCliente();
+      })
+      .catch(() => {
+        alert('Erro no cadastro, tente novamente!');
+        handleCloseModalCliente();
+      });
+  }
   return (
     <div id="home">
       <Header isHome>
@@ -178,6 +219,40 @@ export function Home() {
             </>
           ))}
       </main>
+      {selectedIndex === 6 && (
+        <Footer valorTotal={30.3} fcomprar={handleOpenModalCliente} />
+      )}
+
+      <Modal
+        open={openModalCliente}
+        onClose={handleCloseModalCliente}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleModal} className="container-form">
+          <form onSubmit={handleCreateClienteCompra}>
+            <label htmlFor="Name">Nome</label>
+            <input type="text" id="Name" />
+            <label htmlFor="Name">Nome</label>
+            <input type="text" id="Name" />
+            <label htmlFor="Name">Nome</label>
+            <input type="text" id="Name" />
+            <div id="submit" className="btn-cliente">
+              <div id="content-submit">
+                <div>
+                  <img src={atencaoIcon} alt="Atenção" />
+                  <p>
+                    Importante! <br />
+                    Preencha todos os dados
+                  </p>
+                </div>
+
+                <button type="submit">Continuar</button>
+              </div>
+            </div>
+          </form>
+        </Box>
+      </Modal>
     </div>
   );
 }

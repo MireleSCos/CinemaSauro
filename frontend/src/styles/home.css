@@ -9,7 +9,9 @@
 header {
   padding: 8vh 25vw;
 }
-
+main {
+  margin-bottom: 8rem;
+}
 .container-buttons {
   width: 100%;
   display: flex;
@@ -58,4 +60,8 @@ header {
   font-family: 'Poppins';
   font-weight: 400;
   color: var(--gray-medium);
+}
+
+.btn-cliente {
+  background: transparent !important;
 }
