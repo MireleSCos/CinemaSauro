@@ -65,3 +65,65 @@ main {
 .btn-cliente {
   background: transparent !important;
 }
+
+.title-voucher {
+  font-family: 'Poppins';
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  font-weight: 900;
+  color: #0d114f;
+  text-align: center;
+}
+.description-voucher {
+  font-family: 'Poppins';
+  font-size: clamp(14px, 1.6rem, 2vw);
+  font-weight: 400;
+  color: var(--gray-medium);
+  max-height: 70%;
+}
+.itens-compra {
+  display: flex;
+  justify-content: space-between;
+}
+.description-voucher p {
+  text-align: left;
+  line-height: 2;
+}
+
+.container-valor-voucher {
+  text-align: end;
+  font-size: 2rem;
+  color: var(--gray-medium);
+  margin-top: 3rem;
+}
+.container-valor-voucher p span {
+  color: #8257e5;
+  font-size: 1.8rem;
+  margin-left: 1rem;
+  font-weight: bold;
+}
+
+.container-btn {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.container-btn img {
+  width: 20%;
+}
+
+.container-btn button {
+  font-family: 'Archivo';
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 0;
+  color: var(--white);
+
+  background: #e83f5b;
+  height: 5rem;
+  padding: 1.5rem 4.2rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+}

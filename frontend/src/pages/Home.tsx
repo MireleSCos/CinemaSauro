@@ -9,6 +9,7 @@ import { CardSessao, Sessao } from '../components/CardsSessao';
 import { CardsOferta, Oferta } from '../components/CardsOferta';
 import { Footer } from '../components/Footer';
 import atencaoIcon from '../assets/atencao.svg';
+import qrcode from '../assets/QRCode_Fácil.png';
 import '../styles/home.css';
 
 import Box from '@mui/material/Box';
@@ -36,6 +37,10 @@ export function Home() {
   const [openModalCliente, setOpenModalCliente] = useState(false);
   const handleOpenModalCliente = () => setOpenModalCliente(true);
   const handleCloseModalCliente = () => setOpenModalCliente(false);
+
+  const [openModalVoucher, setOpenModalVoucher] = useState(false);
+  const handleOpenModalVoucher = () => setOpenModalVoucher(true);
+  const handleCloseModalVoucher = () => setOpenModalVoucher(false);
 
   const [filmes, setFilmes] = useState<any[]>([]);
   const [sessoes, setSessoes] = useState<any[]>([]);
@@ -126,10 +131,12 @@ export function Home() {
       .then(() => {
         alert('Cadastro realizado com sucesso!');
         handleCloseModalCliente();
+        handleOpenModalVoucher();
       })
       .catch(() => {
         alert('Erro no cadastro, tente novamente!');
         handleCloseModalCliente();
+        handleOpenModalVoucher();
       });
   }
   return (
@@ -231,12 +238,15 @@ export function Home() {
       >
         <Box sx={styleModal} className="container-form">
           <form onSubmit={handleCreateClienteCompra}>
-            <label htmlFor="Name">Nome</label>
+            <label htmlFor="Name">Seu nome</label>
             <input type="text" id="Name" />
-            <label htmlFor="Name">Nome</label>
-            <input type="text" id="Name" />
-            <label htmlFor="Name">Nome</label>
-            <input type="text" id="Name" />
+            <label htmlFor="Pagamento">Forma de Pagamento</label>
+            <select id="Pagamento">
+              <option value="grapefruit">Grapefruit</option>
+              <option value="lime">Lime</option>
+              <option value="coconut">Coconut</option>
+              <option value="mango">Mango</option>
+            </select>
             <div id="submit" className="btn-cliente">
               <div id="content-submit">
                 <div>
@@ -251,6 +261,42 @@ export function Home() {
               </div>
             </div>
           </form>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openModalVoucher}
+        onClose={handleCloseModalVoucher}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleModal} className="container-form">
+          <h2 className="title-voucher">Compra finalizada</h2>
+          <div className="description-voucher">
+            <div>Este é seu voucher:</div>
+            <div className="itens-compra">
+              <p>Item 1</p> <p>valor</p>
+            </div>
+            <div className="itens-compra">
+              <p>Item 2</p> <p>valor</p>
+            </div>
+            <div className="itens-compra">
+              <p>Item 3</p> <p>valor</p>
+            </div>
+            <div className="itens-compra">
+              <p>Item 4</p> <p>valor</p>
+            </div>
+          </div>
+          <div className="container-valor-voucher">
+            <p>
+              Total <span className="valor">R$ 20,20</span>
+            </p>
+          </div>
+
+          <div className="container-btn">
+            <img src={qrcode} alt="" />
+            <button onClick={handleCloseModalVoucher}>Concluir</button>
+          </div>
         </Box>
       </Modal>
     </div>
