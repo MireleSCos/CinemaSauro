@@ -122,7 +122,11 @@ export function Home() {
 
       <div className="container-buttons">
         <button
-          className="button-create-profissional"
+          className={`${
+            selectedIndex == 1
+              ? 'button-create-profissional select'
+              : 'button-create-profissional'
+          }`}
           onClick={() => {
             handleListItemClick(1);
           }}
@@ -130,15 +134,23 @@ export function Home() {
           Estreias
         </button>
         <button
-          className="button-create-profissional"
+          className={`${
+            selectedIndex == 2
+              ? 'button-create-profissional select'
+              : 'button-create-profissional'
+          }`}
           onClick={() => {
-            handleListItemClick(1);
+            handleListItemClick(2);
           }}
         >
           Filmes
         </button>
         <button
-          className="button-create-profissional"
+          className={`${
+            selectedIndex == 3
+              ? 'button-create-profissional select'
+              : 'button-create-profissional'
+          }`}
           onClick={() => {
             handleListItemClick(3);
           }}
@@ -146,7 +158,11 @@ export function Home() {
           Cadastrar Filme
         </button>
         <button
-          className="button-create-profissional"
+          className={`${
+            selectedIndex == 4
+              ? 'button-create-profissional select'
+              : 'button-create-profissional'
+          }`}
           onClick={() => {
             handleListItemClick(4);
           }}
@@ -157,6 +173,24 @@ export function Home() {
 
       <main className="content__container">
         {selectedIndex === 1 &&
+          (filmes.length === 0 ? (
+            <p className="no-profissional">Nenhuma estreia cadastrado.</p>
+          ) : (
+            <>
+              {filmes.map((filme: Filme) => {
+                if (filme.isestreia) {
+                  return (
+                    <CardsFilmes
+                      filme={filme}
+                      fcompra={opComprarFilmeListSessions}
+                      key={filme.id}
+                    />
+                  );
+                }
+              })}
+            </>
+          ))}
+        {selectedIndex === 2 &&
           (filmes.length === 0 ? (
             <p className="no-profissional">Nenhum filme cadastrado.</p>
           ) : (
@@ -172,6 +206,7 @@ export function Home() {
               })}
             </>
           ))}
+
         {selectedIndex === 3 && <FormFilme />}
         {selectedIndex === 4 && <FormSessao />}
         {selectedIndex === 5 &&

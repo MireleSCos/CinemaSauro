@@ -32,6 +32,7 @@ export function CardsFilmes({ filme, fcompra }: FilmeItemProps) {
               <h2>{filme.nome}</h2>
               <h3>{filme.atores.join(', ')}</h3>
             </div>
+            {filme.isestreia && <p className="text-is-estreia">Estreia</p>}
           </footer>
         </div>
         <div className="bio">

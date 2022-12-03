@@ -38,6 +38,12 @@ main {
   transition: 0.2s;
 }
 
+.button-create-profissional.select {
+  background: #8257e5e8;
+  color: var(--white);
+  border: 1px solid #fff;
+}
+
 .create-profissional:hover {
   opacity: 0.7;
 }

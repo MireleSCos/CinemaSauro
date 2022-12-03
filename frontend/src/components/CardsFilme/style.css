@@ -47,10 +47,14 @@
   height: 8rem;
   border-radius: 50%;
 }
+#profissional-content .profissional-datas footer .text-is-estreia {
+  color: #8257e5;
+}
 
 #profissional-content .profissional-datas footer div h2 {
   font-family: 'Archivo';
   font-size: clamp(1.4rem, 2.4rem, 2vw);
+  width: 45rem;
   font-weight: 700;
   color: var(--gray-dark);
 }
