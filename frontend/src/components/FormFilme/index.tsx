@@ -1,62 +1,55 @@
 import api from '../../services/api';
-import Select from 'react-select';
-import atencaoIcon from '../../assets/atencao.svg';
-import Switch from '@mui/material/Switch';
 import './style.css';
+
+import atencaoIcon from '../../assets/atencao.svg';
+import Select from 'react-select';
+import Switch from '@mui/material/Switch';
 import { Button } from '../Button';
+import { Filme } from '../CardsFilme';
+
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
-import MultiValue from 'react-select/dist/declarations/src/components/MultiValue';
 
 export function FormFilme() {
-  const [name, setName] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [profession, setProfession] = useState('');
-  const [bio, setBio] = useState('');
-  const [isEstreia, setIsEstreia] = useState(true);
+  const navigation = useNavigate();
+
+  const [nome, setNome] = useState('');
+  const [censura, setCensura] = useState(0);
+  const [duracao, setDuracao] = useState(0);
+  const [categoria, setCategoria] = useState('');
+  const [empresa, setEmpresa] = useState('');
+  const [isNacional, setIsNacional] = useState(false);
+  const [isEstreia, setIsEstreia] = useState(false);
+  const [atores, setAtores] = useState<Array<String>>([]);
 
   const handleEstreia = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsEstreia(event.target.checked);
   };
-  const handleAtores = (event: any) => {
-    console.log(event);
+  const handleNacional = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsNacional(event.target.checked);
   };
-
-  interface ColourOption {
-    readonly value: string;
-    readonly label: string;
-    readonly color: string;
-    readonly isFixed?: boolean;
-    readonly isDisabled?: boolean;
-  }
-  const colourOptions: readonly ColourOption[] = [
-    { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
-    { value: 'blue', label: 'Blue', color: '#0052CC', isDisabled: true },
-    { value: 'purple', label: 'Purple', color: '#5243AA' },
-    { value: 'red', label: 'Red', color: '#FF5630', isFixed: true },
-    { value: 'orange', label: 'Orange', color: '#FF8B00' },
-    { value: 'yellow', label: 'Yellow', color: '#FFC400' },
-    { value: 'green', label: 'Green', color: '#36B37E' },
-    { value: 'forest', label: 'Forest', color: '#00875A' },
-    { value: 'slate', label: 'Slate', color: '#253858' },
-    { value: 'silver', label: 'Silver', color: '#666666' },
-  ];
-
-  const navigation = useNavigate();
+  const handleAtores = (event: any) => {
+    var atoresInformados: Array<String> = [];
+    event.map((ator: AtoresOption) => {
+      atoresInformados.push(ator.value);
+    });
+    console.log(atoresInformados);
+    setAtores(atoresInformados);
+  };
 
   function handleCreateFilme(e: FormEvent) {
     e.preventDefault();
 
     api
-      .post('professionals', {
-        name,
-        cpf,
-        birthday,
-        whatsapp,
-        profession,
-        bio,
+      .post('filme', {
+        nome,
+        censura,
+        duracao,
+        categoria,
+        empresa,
+        isNacional,
+        isEstreia,
+        atores,
       })
       .then(() => {
         alert('Cadastro realizado com sucesso!');
@@ -68,66 +61,87 @@ export function FormFilme() {
       });
   }
 
+  interface AtoresOption {
+    readonly value: string;
+    readonly label: string;
+    readonly color: string;
+  }
+  const AtoresOptions: readonly AtoresOption[] = [
+    { value: 'Elizabeth Olsen', label: 'Elizabeth Olsen', color: '#00B8D9' },
+    {
+      value: 'Robert Downey Jr.',
+      label: 'Robert Downey Jr.',
+      color: '#0052CC',
+    },
+    { value: 'Mark Ruffalo', label: 'Mark Ruffalo', color: '#5243AA' },
+    {
+      value: 'Scarlett Johansson',
+      label: 'Scarlett Johansson',
+      color: '#FF5630',
+    },
+    { value: 'Henry Cavill', label: 'Henry Cavill', color: '#FF8B00' },
+  ];
+
   return (
     <div className="container-form">
       <h1>Dados do Filme</h1>
       <div className="separator"></div>
       <form onSubmit={handleCreateFilme}>
-        <label htmlFor="Name">Nome</label>
+        <label htmlFor="Nome">Nome</label>
         <input
           type="text"
-          id="Name"
-          value={name}
+          id="Nome"
+          value={nome}
           onChange={e => {
-            setName(e.target.value);
+            setNome(e.target.value);
           }}
         />
         <label htmlFor="Ator">Atores principais</label>
         <Select
-          defaultValue={[colourOptions[2], colourOptions[3]]}
+          defaultValue={[AtoresOptions[2], AtoresOptions[3]]}
           isMulti
           name="colors"
-          options={colourOptions}
+          options={AtoresOptions}
           onChange={e => {
             handleAtores(e);
           }}
           className="basic-multi-select select-atores"
           classNamePrefix="select"
         />
-        <label htmlFor="Genero">Genero</label>
+        <label htmlFor="categoria">Categoria</label>
         <input
           type="text"
-          id="Genero"
-          value={name}
+          id="categoria"
+          value={categoria}
           onChange={e => {
-            setName(e.target.value);
+            setCategoria(e.target.value);
           }}
         />
         <label htmlFor="Censura">Censura</label>
         <input
-          type="text"
+          type="number"
           id="Censura"
-          value={name}
+          value={censura}
           onChange={e => {
-            setName(e.target.value);
+            setCensura(e.target.valueAsNumber);
           }}
         />
         <label htmlFor="Duracao">Duracao</label>
         <input
-          type="text"
+          type="number"
           id="Duracao"
-          value={name}
+          value={duracao}
           onChange={e => {
-            setName(e.target.value);
+            setDuracao(e.target.valueAsNumber);
           }}
         />
         <label htmlFor="Empresa">Empresa</label>
         <input
           type="text"
           id="Empresa"
-          value={name}
+          value={empresa}
           onChange={e => {
-            setName(e.target.value);
+            setEmpresa(e.target.value);
           }}
         />
         <label htmlFor="Estreia">Estreia</label>
@@ -136,6 +150,14 @@ export function FormFilme() {
           className="input-switch"
           checked={isEstreia}
           onChange={handleEstreia}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        <label htmlFor="Nacional">Nacional</label>
+        <Switch
+          id="Nacional"
+          className="input-switch"
+          checked={isNacional}
+          onChange={handleNacional}
           inputProps={{ 'aria-label': 'controlled' }}
         />
         <div id="submit">
