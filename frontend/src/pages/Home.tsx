@@ -66,7 +66,7 @@ export function Home() {
     salaid: 0,
     valor: 0,
   });
-  const [ofertasSelecionadas, setOfertasSelecionadas] = useState(0);
+  const [ofertasSelecionadas, setOfertasSelecionadas] = useState<any[]>([]);
   const [valorTotal, setValorTotal] = useState(0);
 
   const [selectedIndex, setSelectedIndex] = useState<number>(1);
@@ -77,6 +77,13 @@ export function Home() {
   useEffect(() => {
     getSessoes();
   }, [filmeSelect]);
+  useEffect(() => {
+    let newValorTotal = valorTotal;
+    ofertasSelecionadas.forEach((oferta: Oferta) => {
+      newValorTotal = Number(newValorTotal) + Number(oferta.valor);
+    });
+    setValorTotal(newValorTotal);
+  }, [ofertasSelecionadas]);
   //Selecionar opção do header
   const handleListItemClick = (index: number) => {
     setSelectedIndex(index);
@@ -88,7 +95,23 @@ export function Home() {
   const opComprarSessaoListOfertas = (sessao: Sessao) => {
     setValorTotal(sessao.valor);
     setSessaoSelect(sessao);
+    getOfertas();
     handleListItemClick(6);
+  };
+
+  const opComprarOferta = (oferta_compra: Oferta, op: boolean) => {
+    if (!op) {
+      //Retirar
+      const newOfertasSelect = ofertasSelecionadas?.filter(
+        oferta => oferta.id !== oferta_compra.id
+      );
+      setOfertasSelecionadas(newOfertasSelect);
+    } else {
+      setOfertasSelecionadas(oldArray => [
+        ...ofertasSelecionadas,
+        oferta_compra,
+      ]);
+    }
   };
 
   const getFilmes = () => {
@@ -117,19 +140,22 @@ export function Home() {
   const getOfertas = () => {
     /* alert('Erro ao listar profissionais.'); */
     let toferta = {
-      id_oferta: '123',
-      name: 'Pipoca',
-      valor: '50,00',
+      id: 123,
+      nome: 'Pipoca',
+      valor: 50.0,
+      dia: 'quinta',
     };
     let toferta2 = {
-      id_oferta: '1234',
-      name: 'Coca-cola',
-      valor: '10,00',
+      id: 124,
+      nome: 'Fini',
+      valor: 15.0,
+      dia: 'quinta',
     };
     let toferta3 = {
-      id_oferta: '222',
-      name: 'Fini',
-      valor: '10,00',
+      id: 125,
+      nome: 'Refri',
+      valor: 7.0,
+      dia: 'quarta',
     };
     setOfertas([toferta, toferta2, toferta3]);
   };
@@ -268,7 +294,13 @@ export function Home() {
           ) : (
             <>
               {ofertas.map((oferta: Oferta) => {
-                return <CardsOferta oferta={oferta} key={oferta.id_oferta} />;
+                return (
+                  <CardsOferta
+                    oferta={oferta}
+                    fcompra={opComprarOferta}
+                    key={oferta.id}
+                  />
+                );
               })}
             </>
           ))}

@@ -32,7 +32,6 @@ export function FormFilme() {
     var atoresInformados: Array<String> = [];
     atoresInformados = event.split(',');
     setAtores(atoresInformados);
-    console.log(atoresInformados);
     /* event.map((ator: AtoresOption) => {
       atoresInformados.push(ator.value);
     });

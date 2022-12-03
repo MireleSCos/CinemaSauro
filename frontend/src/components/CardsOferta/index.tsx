@@ -5,16 +5,25 @@ import './style.css';
 import { useEffect, useState } from 'react';
 
 export interface Oferta {
-  id_oferta: number;
-  name: String;
-  valor: String;
+  id: number;
+  nome: String;
+  valor: number;
+  dia: String;
 }
 
 interface OfertaItemProps {
   oferta: Oferta;
+  fcompra: Function;
 }
 
-export function CardsOferta({ oferta }: OfertaItemProps) {
+export function CardsOferta({ oferta, fcompra }: OfertaItemProps) {
+  const [toogle, setToogle] = useState(true);
+  const [cor, setCor] = useState('#c3c3c3');
+
+  useEffect(() => {
+    setCor(state => (toogle ? '#c3c3c3' : '#04d361'));
+  }, [toogle]);
+
   return (
     <div id="content">
       <div id="profissional-content">
@@ -22,7 +31,7 @@ export function CardsOferta({ oferta }: OfertaItemProps) {
           <footer>
             <img src={cinema} alt="Profissional" />
             <div>
-              <h2>{oferta.name}</h2>
+              <h2>{oferta.nome}</h2>
             </div>
           </footer>
         </div>
@@ -36,7 +45,18 @@ export function CardsOferta({ oferta }: OfertaItemProps) {
             </p>
           </div>
 
-          <button className="btn-comprar">Selecionar oferta</button>
+          <button
+            className="btn-comprar"
+            onClick={e => {
+              fcompra(oferta, toogle);
+              setToogle(state => !state);
+            }}
+            style={{
+              backgroundColor: cor,
+            }}
+          >
+            {toogle ? 'Selecionar oferta' : 'Selecionada'}
+          </button>
         </div>
       </div>
     </div>
