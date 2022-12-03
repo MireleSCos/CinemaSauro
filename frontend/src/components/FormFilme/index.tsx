@@ -30,11 +30,13 @@ export function FormFilme() {
   };
   const handleAtores = (event: any) => {
     var atoresInformados: Array<String> = [];
-    event.map((ator: AtoresOption) => {
+    atoresInformados = event.split(',');
+    setAtores(atoresInformados);
+    console.log(atoresInformados);
+    /* event.map((ator: AtoresOption) => {
       atoresInformados.push(ator.value);
     });
-    console.log(atoresInformados);
-    setAtores(atoresInformados);
+     */
   };
 
   function handleCreateFilme(e: FormEvent) {
@@ -97,7 +99,14 @@ export function FormFilme() {
           }}
         />
         <label htmlFor="Ator">Atores principais</label>
-        <Select
+        <input
+          type="text"
+          id="Ator"
+          onChange={e => {
+            handleAtores(e.target.value);
+          }}
+        />
+        {/* <Select
           defaultValue={[AtoresOptions[2], AtoresOptions[3]]}
           isMulti
           name="colors"
@@ -107,7 +116,7 @@ export function FormFilme() {
           }}
           className="basic-multi-select select-atores"
           classNamePrefix="select"
-        />
+        /> */}
         <label htmlFor="categoria">Categoria</label>
         <input
           type="text"
