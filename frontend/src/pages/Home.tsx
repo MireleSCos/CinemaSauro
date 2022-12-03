@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { FormEvent } from 'react';
+import { useEffect, useState, FormEvent } from 'react';
 
 import { Header } from '../components/Header';
 import { CardsFilmes, Filme } from '../components/CardsFilme';
@@ -8,10 +7,11 @@ import { FormSessao } from '../components/FormSessao';
 import { CardSessao, Sessao } from '../components/CardsSessao';
 import { CardsOferta, Oferta } from '../components/CardsOferta';
 import { Footer } from '../components/Footer';
+
 import atencaoIcon from '../assets/atencao.svg';
 import qrcode from '../assets/QRCode_Fácil.png';
-import '../styles/home.css';
 
+import '../styles/home.css';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -41,6 +41,7 @@ export function Home() {
   const [openModalVoucher, setOpenModalVoucher] = useState(false);
   const handleOpenModalVoucher = () => setOpenModalVoucher(true);
   const handleCloseModalVoucher = () => setOpenModalVoucher(false);
+  const [nome, setNome] = useState(''); //Nome do cliente
 
   const [filmes, setFilmes] = useState<any[]>([]);
   const [sessoes, setSessoes] = useState<any[]>([]);
@@ -153,18 +154,27 @@ export function Home() {
 
   function handleCreateClienteCompra(e: FormEvent) {
     e.preventDefault();
-
+    let itemsComprados: any[] = [];
+    ofertasSelecionadas.map((oferta: Oferta) => {
+      itemsComprados.push({ itemId: oferta.id, preco: oferta.valor });
+    });
+    let sessaoComprada = {
+      sessaoId: sessaoSelect.id,
+      valor: sessaoSelect.valor,
+    };
     api
-      .post('professionals', {})
+      .post('purchase', {
+        nome,
+        itens: itemsComprados,
+        sessao: sessaoComprada,
+      })
       .then(() => {
-        alert('Cadastro realizado com sucesso!');
+        alert('Compra realizada com sucesso');
         handleCloseModalCliente();
         handleOpenModalVoucher();
       })
       .catch(() => {
         alert('Erro no cadastro, tente novamente!');
-        handleCloseModalCliente();
-        handleOpenModalVoucher();
       });
   }
   return (
@@ -309,13 +319,27 @@ export function Home() {
         <Box sx={styleModal} className="container-form">
           <form onSubmit={handleCreateClienteCompra}>
             <label htmlFor="Name">Seu nome</label>
-            <input type="text" id="Name" />
+            <input
+              type="text"
+              id="Nome"
+              value={nome}
+              onChange={e => {
+                setNome(e.target.value);
+              }}
+            />
             <label htmlFor="Pagamento">Forma de Pagamento</label>
             <select id="Pagamento">
-              <option value="grapefruit">Grapefruit</option>
-              <option value="lime">Lime</option>
-              <option value="coconut">Coconut</option>
-              <option value="mango">Mango</option>
+              <option value="credito">Crédito</option>
+              <option value="debito">Debito</option>
+              <option value="dinheiro">Dinheiro</option>
+            </select>
+            <label htmlFor="cliente-categoria">Categoria do cliente</label>
+            <select id="cliente-categoria">
+              <option value="adulto">adulto</option>
+              <option value="estudante">estudante</option>
+              <option value="infantil">infantil</option>
+              <option value="idoso">idoso</option>
+              <option value="flamenguista">flamenguista</option>
             </select>
             <div id="submit" className="btn-cliente">
               <div id="content-submit">
@@ -345,21 +369,19 @@ export function Home() {
           <div className="description-voucher">
             <div>Este é seu voucher:</div>
             <div className="itens-compra">
-              <p>Item 1</p> <p>valor</p>
+              <p>{filmeSelect.nome}</p> <p>{sessaoSelect.valor}</p>
             </div>
-            <div className="itens-compra">
-              <p>Item 2</p> <p>valor</p>
-            </div>
-            <div className="itens-compra">
-              <p>Item 3</p> <p>valor</p>
-            </div>
-            <div className="itens-compra">
-              <p>Item 4</p> <p>valor</p>
-            </div>
+            {ofertasSelecionadas.map((oferta: Oferta) => {
+              return (
+                <div className="itens-compra">
+                  <p>{oferta.nome}</p> <p>{oferta.valor}</p>
+                </div>
+              );
+            })}
           </div>
           <div className="container-valor-voucher">
             <p>
-              Total <span className="valor">R$ 20,20</span>
+              Total <span className="valor">R$ {valorTotal}</span>
             </p>
           </div>
 
