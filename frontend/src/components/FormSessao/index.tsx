@@ -2,46 +2,75 @@ import api from '../../services/api';
 import atencaoIcon from '../../assets/atencao.svg';
 import './style.css';
 import { Button } from '../Button';
-import { FormEvent, useState } from 'react';
+import { Filme } from '../CardsFilme';
+import { FormEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-export function FormSessao() {
-  const [name, setName] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [profession, setProfession] = useState('');
-  const [bio, setBio] = useState('');
-  const [isEstreia, setIsEstreia] = useState(true);
+export interface Sala {
+  id: number;
+  capacidade: number;
+}
 
-  const handleEstreia = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsEstreia(event.target.checked);
-  };
-  const handleAtores = (event: any) => {
-    console.log(event);
-  };
+export function FormSessao() {
+  const [salaId, setSalaId] = useState(1);
+  const [filmeId, setFilmeId] = useState(1);
+  const [valor, setValor] = useState(0);
+  const [data, setData] = useState('');
+  const [hora, setHora] = useState('');
+
+  const [filmes, setFilmes] = useState<any[]>([]);
+  const [salas, setSalas] = useState<any[]>([]);
 
   const navigation = useNavigate();
+  useEffect(() => {
+    api
+      .get('filme')
+      .then(response => {
+        setFilmes(response.data);
+      })
+      .catch(() => {
+        alert('Erro ao listar profissionais.');
+      });
+    api
+      .get('room')
+      .then(response => {
+        setSalas(response.data);
+      })
+      .catch(() => {
+        alert('Erro ao listar profissionais.');
+      });
+  }, []);
 
+  function handleSalaId(value: string) {
+    setSalaId(parseInt(value));
+  }
+  function handleFilmeID(value: string) {
+    setFilmeId(parseInt(value));
+  }
   function handleCreateFilme(e: FormEvent) {
     e.preventDefault();
 
     api
-      .post('professionals', {
-        name,
-        cpf,
-        birthday,
-        whatsapp,
-        profession,
-        bio,
+      .post('sessao', {
+        salaId,
+        filmeId,
+        valor,
+        data,
+        hora,
       })
       .then(() => {
         alert('Cadastro realizado com sucesso!');
 
         navigation('/');
       })
-      .catch(() => {
-        alert('Erro no cadastro, tente novamente!');
+      .catch(err => {
+        if (err.response.status == 300) {
+          alert(
+            'A sessão não pode ser cadastrada pois entra em conflito com outras sessões na mesma sala, teste outro horário ou data'
+          );
+        } else {
+          alert('Erro');
+        }
       });
   }
 
@@ -54,44 +83,59 @@ export function FormSessao() {
         <select
           id="Sala"
           onChange={e => {
-            setName(e.target.value);
+            handleSalaId(e.target.value);
           }}
         >
-          <option value="grapefruit">Grapefruit</option>
-          <option value="lime">Lime</option>
-          <option value="coconut">Coconut</option>
-          <option value="mango">Mango</option>
+          {salas.map((sala: Sala) => {
+            return (
+              <option key={sala.id} value={sala.id}>
+                Sala {sala.id}
+              </option>
+            );
+          })}
         </select>
 
         <label htmlFor="Filme">Filme</label>
         <select
           id="Filme"
           onChange={e => {
-            setName(e.target.value);
+            handleFilmeID(e.target.value);
           }}
         >
-          <option value="grapefruit">Grapefruit</option>
-          <option value="lime">Lime</option>
-          <option value="coconut">Coconut</option>
-          <option value="mango">Mango</option>
+          {filmes.map((filme: Filme) => {
+            return (
+              <option key={filme.id} value={filme.id}>
+                {filme.nome}
+              </option>
+            );
+          })}
         </select>
 
-        <label htmlFor="data_inicio">Data inicio</label>
+        <label htmlFor="data_inicio">Data</label>
         <input
-          type="text"
+          type="date"
           id="data_inicio"
-          value={name}
+          value={data}
           onChange={e => {
-            setName(e.target.value);
+            setData(e.target.value);
           }}
         />
-        <label htmlFor="Horario">Horario</label>
+        <label htmlFor="Horario">Hora</label>
         <input
-          type="text"
+          type="time"
           id="Horario"
-          value={name}
+          value={hora}
           onChange={e => {
-            setName(e.target.value);
+            setHora(e.target.value);
+          }}
+        />
+        <label htmlFor="Valor">Valor</label>
+        <input
+          type="number"
+          id="Valor"
+          value={valor}
+          onChange={e => {
+            setValor(e.target.valueAsNumber);
           }}
         />
         <div id="submit">
