@@ -54,7 +54,7 @@ export function CardsFilmes({ filme, fcompra }: FilmeItemProps) {
           <button
             className="btn-comprar"
             onClick={e => {
-              fcompra(filme.id);
+              fcompra(filme);
             }}
           >
             Comprar

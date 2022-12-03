@@ -3,22 +3,24 @@ import { Button } from '../Button';
 
 import './style.css';
 import { useEffect, useState } from 'react';
+import { Filme } from '../CardsFilme';
 
 export interface Sessao {
-  id_sessao: number;
-  sala: String;
-  filme: String;
-  atoresPrincipais: String;
-  dataInicio: String;
-  horario: String;
+  id: number;
+  filmeid: number;
+  salaid: number;
+  data: Date;
+  hora: String;
+  valor: number;
 }
 
 interface SessaoItemProps {
   sessao: Sessao;
+  filme: Filme;
   fcompra: Function;
 }
 
-export function CardSessao({ sessao, fcompra }: SessaoItemProps) {
+export function CardSessao({ sessao, filme, fcompra }: SessaoItemProps) {
   return (
     <div id="content">
       <div id="profissional-content">
@@ -26,14 +28,14 @@ export function CardSessao({ sessao, fcompra }: SessaoItemProps) {
           <footer>
             <img src={cinema} alt="Profissional" />
             <div>
-              <h2>{sessao.filme}</h2>
-              <h3>{sessao.atoresPrincipais}</h3>
+              <h2>{filme.nome}</h2>
+              <h3>Sala {sessao.salaid}</h3>
             </div>
           </footer>
         </div>
         <div className="bio">
-          <p>Sala: {sessao.sala}</p>
-          <p>Horario: {sessao.horario}</p>
+          <p>Data: {sessao.data}</p>
+          <p>Horario: {sessao.hora}</p>
         </div>
       </div>
       <div id="submit">
@@ -41,14 +43,14 @@ export function CardSessao({ sessao, fcompra }: SessaoItemProps) {
           <div>
             <p>
               Preço
-              <span className="valor">R$ 20,00</span>
+              <span className="valor">R$ {sessao.valor}</span>
             </p>
           </div>
 
           <button
             className="btn-comprar"
             onClick={e => {
-              fcompra(sessao.id_sessao);
+              fcompra(sessao);
             }}
           >
             Finalizar compra

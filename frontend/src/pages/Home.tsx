@@ -46,56 +46,92 @@ export function Home() {
   const [sessoes, setSessoes] = useState<any[]>([]);
   const [ofertas, setOfertas] = useState<any[]>([]);
 
+  //Informações para compra
+  const [filmeSelect, setFilmeSelect] = useState<Filme>({
+    id: 0,
+    atores: [],
+    categoria: '',
+    censura: 0,
+    duracao: 0,
+    empresa: '',
+    isestreia: false,
+    isnacional: false,
+    nome: '',
+  });
+  const [sessaoSelect, setSessaoSelect] = useState<Sessao>({
+    id: 0,
+    data: new Date(),
+    filmeid: 0,
+    hora: '',
+    salaid: 0,
+    valor: 0,
+  });
+  const [ofertasSelecionadas, setOfertasSelecionadas] = useState(0);
+  const [valorTotal, setValorTotal] = useState(0);
+
   const [selectedIndex, setSelectedIndex] = useState<number>(1);
 
   useEffect(() => {
-    api
-      .get('filme')
-      .then(response => {
-        setFilmes(response.data);
-        let tsessao = {
-          id_sessao: 22,
-          sala: 'Sala 101',
-          filme: 'Nome do Filme',
-          atoresPrincipais: 'Atores principais',
-          dataInicio: '22/11/1111',
-          horario: '12:30',
-        };
-        setSessoes([tsessao]);
-        /* alert('Erro ao listar profissionais.'); */
-        let toferta = {
-          id_oferta: '123',
-          name: 'Pipoca',
-          valor: '50,00',
-        };
-        let toferta2 = {
-          id_oferta: '1234',
-          name: 'Coca-cola',
-          valor: '10,00',
-        };
-        let toferta3 = {
-          id_oferta: '222',
-          name: 'Fini',
-          valor: '10,00',
-        };
-        setOfertas([toferta, toferta2, toferta3]);
-      })
-      .catch(() => {
-        alert('Erro ao listar profissionais.');
-      });
-  }, []);
+    getFilmes();
+  }, [selectedIndex]);
+  useEffect(() => {
+    getSessoes();
+  }, [filmeSelect]);
   //Selecionar opção do header
   const handleListItemClick = (index: number) => {
     setSelectedIndex(index);
   };
-
-  const opComprarFilmeListSessions = (id_filme: number) => {
-    console.log('id do filme:', id_filme);
+  const opComprarFilmeListSessions = (filme: Filme) => {
+    setFilmeSelect(filme);
     handleListItemClick(5);
   };
-  const opComprarSessaoListOfertas = (id_sessao: number) => {
-    console.log('id da sessao:', id_sessao);
+  const opComprarSessaoListOfertas = (sessao: Sessao) => {
+    setValorTotal(sessao.valor);
+    setSessaoSelect(sessao);
     handleListItemClick(6);
+  };
+
+  const getFilmes = () => {
+    api
+      .get('filme')
+      .then(response => {
+        setFilmes(response.data);
+      })
+      .catch(() => {
+        alert('Erro ao listar filmes.');
+      });
+  };
+
+  const getSessoes = () => {
+    let idFilmeSelecionado = filmeSelect?.id ? filmeSelect?.id : 0;
+    api
+      .get('sessao/' + idFilmeSelecionado)
+      .then(response => {
+        setSessoes(response.data);
+      })
+      .catch(() => {
+        alert('Erro ao listar sessoes.');
+      });
+  };
+
+  const getOfertas = () => {
+    /* alert('Erro ao listar profissionais.'); */
+    let toferta = {
+      id_oferta: '123',
+      name: 'Pipoca',
+      valor: '50,00',
+    };
+    let toferta2 = {
+      id_oferta: '1234',
+      name: 'Coca-cola',
+      valor: '10,00',
+    };
+    let toferta3 = {
+      id_oferta: '222',
+      name: 'Fini',
+      valor: '10,00',
+    };
+    setOfertas([toferta, toferta2, toferta3]);
   };
 
   function handleCreateClienteCompra(e: FormEvent) {
@@ -218,8 +254,9 @@ export function Home() {
                 return (
                   <CardSessao
                     sessao={sessao}
+                    filme={filmeSelect}
                     fcompra={opComprarSessaoListOfertas}
-                    key={sessao.id_sessao}
+                    key={sessao.id}
                   />
                 );
               })}
@@ -237,7 +274,7 @@ export function Home() {
           ))}
       </main>
       {selectedIndex === 6 && (
-        <Footer valorTotal={30.3} fcomprar={handleOpenModalCliente} />
+        <Footer valorTotal={valorTotal} fcomprar={handleOpenModalCliente} />
       )}
 
       <Modal
