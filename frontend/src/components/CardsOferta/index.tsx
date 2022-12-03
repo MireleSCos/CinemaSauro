@@ -8,7 +8,6 @@ export interface Oferta {
   id: number;
   nome: String;
   valor: number;
-  dia: String;
 }
 
 interface OfertaItemProps {

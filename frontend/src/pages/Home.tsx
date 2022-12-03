@@ -74,16 +74,19 @@ export function Home() {
   useEffect(() => {
     getFilmes();
   }, [selectedIndex]);
+
   useEffect(() => {
     getSessoes();
   }, [filmeSelect]);
+
   useEffect(() => {
-    let newValorTotal = valorTotal;
+    let newValorTotal = sessaoSelect.valor;
     ofertasSelecionadas.forEach((oferta: Oferta) => {
       newValorTotal = Number(newValorTotal) + Number(oferta.valor);
     });
     setValorTotal(newValorTotal);
   }, [ofertasSelecionadas]);
+
   //Selecionar opção do header
   const handleListItemClick = (index: number) => {
     setSelectedIndex(index);
@@ -138,26 +141,14 @@ export function Home() {
   };
 
   const getOfertas = () => {
-    /* alert('Erro ao listar profissionais.'); */
-    let toferta = {
-      id: 123,
-      nome: 'Pipoca',
-      valor: 50.0,
-      dia: 'quinta',
-    };
-    let toferta2 = {
-      id: 124,
-      nome: 'Fini',
-      valor: 15.0,
-      dia: 'quinta',
-    };
-    let toferta3 = {
-      id: 125,
-      nome: 'Refri',
-      valor: 7.0,
-      dia: 'quarta',
-    };
-    setOfertas([toferta, toferta2, toferta3]);
+    api
+      .get('item')
+      .then(response => {
+        setOfertas(response.data);
+      })
+      .catch(() => {
+        alert('Erro ao listar filmes.');
+      });
   };
 
   function handleCreateClienteCompra(e: FormEvent) {
