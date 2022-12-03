@@ -5,15 +5,15 @@ import './style.css';
 import { useEffect, useState } from 'react';
 
 export interface Filme {
-  id_filme: number;
+  id: number;
   nome: String;
-  is_nacional: boolean;
-  atores_principais: String;
   censura: number;
-  categoria: String;
-  is_estreia: boolean;
   duracao: number;
+  categoria: String;
   empresa: String;
+  isnacional: Boolean;
+  isestreia: Boolean;
+  atores: Array<String>;
 }
 
 interface FilmeItemProps {
@@ -30,7 +30,7 @@ export function CardsFilmes({ filme, fcompra }: FilmeItemProps) {
             <img src={cinema} alt="Profissional" />
             <div>
               <h2>{filme.nome}</h2>
-              <h3>{filme.atores_principais}</h3>
+              <h3>{filme.atores.join(', ')}</h3>
             </div>
           </footer>
         </div>
@@ -45,15 +45,15 @@ export function CardsFilmes({ filme, fcompra }: FilmeItemProps) {
         <div id="content-submit">
           <div>
             <p>
-              Preço
-              <span className="valor">R$ 20,00</span>
+              {/* Preço */}
+              {/*  <span className="valor">R$ 20,00</span> */}
             </p>
           </div>
 
           <button
             className="btn-comprar"
             onClick={e => {
-              fcompra(filme.id_filme);
+              fcompra(filme.id);
             }}
           >
             Comprar

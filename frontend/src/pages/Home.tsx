@@ -50,37 +50,9 @@ export function Home() {
 
   useEffect(() => {
     api
-      .get('filmes')
+      .get('filme')
       .then(response => {
         setFilmes(response.data);
-      })
-      .catch(() => {
-        /* alert('Erro ao listar profissionais.'); */
-        let tfilme1 = {
-          id_filme: 22,
-          nome: 'Nome do Filme',
-          is_nacional: true,
-          atores_principais: 'Atores principais',
-          censura: 22,
-          categoria: 'Drama',
-          is_estreia: true,
-          duracao: 22,
-          empresa: 'Pixar',
-        };
-        let tfilme2 = {
-          id_filme: 44,
-          nome: 'Nome do Filme',
-          is_nacional: true,
-          atores_principais: 'Atores principais',
-          censura: 22,
-          categoria: 'Drama',
-          is_estreia: true,
-          duracao: 22,
-          empresa: 'Pixar',
-        };
-        setFilmes([tfilme1, tfilme2]);
-
-        /* alert('Erro ao listar profissionais.'); */
         let tsessao = {
           id_sessao: 22,
           sala: 'Sala 101',
@@ -107,6 +79,9 @@ export function Home() {
           valor: '10,00',
         };
         setOfertas([toferta, toferta2, toferta3]);
+      })
+      .catch(() => {
+        alert('Erro ao listar profissionais.');
       });
   }, []);
   //Selecionar opção do header
@@ -191,7 +166,7 @@ export function Home() {
                   <CardsFilmes
                     filme={filme}
                     fcompra={opComprarFilmeListSessions}
-                    key={filme.id_filme}
+                    key={filme.id}
                   />
                 );
               })}
