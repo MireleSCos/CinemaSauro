@@ -60,19 +60,39 @@ router.get("/:filmeId", async (req, res) => {
   const filmeId = req.params.filmeId;
   const date = req.query.date;
 
-  let sessoes;
+  let sessoesDocs;
 
   if(!date){
-    sessoes = (await db.query(
+    sessoesDocs = (await db.query(
       "SELECT * FROM sessao WHERE filmeId = $1 ORDER BY data+hora", 
       [filmeId])
     ).rows;
   }else{
-    sessoes = (await db.query(
+    sessoesDocs = (await db.query(
       `SELECT * FROM sessao WHERE filmeId = $1 AND data = '${date}' ORDER BY hora`, 
       [filmeId]
     )).rows;
   } 
+
+  let sessoes = [];
+  for(const sessao of sessoesDocs){
+    const ingressoCount = (await db.query(
+      "SELECT count(ingresso.id) FROM ingresso\n"+
+      "WHERE ingresso.sessaoId = $1",
+      [sessao.id]
+    )).rows[0].count;
+
+    const salaCapacidade = (await db.query(
+      "SELECT sala.capacidade FROM sessao, sala\n"+
+      "WHERE sessao.id = $1 AND sala.id = sessao.salaId",
+      [sessao.id]
+    )).rows[0].capacidade
+
+    const livre = ingressoCount < salaCapacidade;
+
+    sessoes.push({...sessao, livre});
+  };
+
   res.status(201).send(sessoes);
 }); 
 
