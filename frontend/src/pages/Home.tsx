@@ -58,6 +58,8 @@ export function Home() {
   const [sessoes, setSessoes] = useState<any[]>([]);
   const [ofertas, setOfertas] = useState<any[]>([]);
 
+  const [dataSessao, setDataSessao] = useState('');
+
   //Informações para compra
   const [filmeSelect, setFilmeSelect] = useState<Filme>({
     id: 0,
@@ -89,7 +91,7 @@ export function Home() {
 
   useEffect(() => {
     getSessoes();
-  }, [filmeSelect]);
+  }, [filmeSelect, dataSessao]);
 
   useEffect(() => {
     let newValorTotal = sessaoSelect.valor;
@@ -180,7 +182,7 @@ export function Home() {
   const getSessoes = () => {
     let idFilmeSelecionado = filmeSelect?.id ? filmeSelect?.id : 0;
     api
-      .get('sessao/' + idFilmeSelecionado)
+      .get('sessao/' + idFilmeSelecionado + '?date=' + dataSessao)
       .then(response => {
         setSessoes(response.data);
       })
@@ -319,23 +321,46 @@ export function Home() {
 
         {selectedIndex === 3 && <FormFilme />}
         {selectedIndex === 4 && <FormSessao />}
-        {selectedIndex === 5 &&
-          (sessoes.length === 0 ? (
-            <p className="no-profissional">Nenhuma sessao cadastrado.</p>
-          ) : (
-            <>
-              {sessoes.map((sessao: Sessao) => {
-                return (
-                  <CardSessao
-                    sessao={sessao}
-                    filme={filmeSelect}
-                    fcompra={opComprarSessaoListOfertas}
-                    key={sessao.id}
-                  />
-                );
-              })}
-            </>
-          ))}
+        {selectedIndex === 5 && sessoes.length === 0 ? (
+          <div>
+            <label htmlFor="data_sessao">Data da Sessão</label>
+            <input
+              type="date"
+              id="data_sessao"
+              min={new Date().toISOString().split('T')[0]}
+              value={dataSessao}
+              onChange={e => {
+                setDataSessao(e.target.value);
+              }}
+            />
+            <p className="no-profissional">
+              Nenhuma sessao cadastrado para essa data.
+            </p>
+          </div>
+        ) : (
+          <>
+            <label htmlFor="data_sessao">Data da Sessão</label>
+            <input
+              type="date"
+              id="data_sessao"
+              min={new Date().toISOString().split('T')[0]}
+              value={dataSessao}
+              onChange={e => {
+                setDataSessao(e.target.value);
+              }}
+            />
+            {sessoes.map((sessao: Sessao) => {
+              return (
+                <CardSessao
+                  sessao={sessao}
+                  filme={filmeSelect}
+                  fcompra={opComprarSessaoListOfertas}
+                  key={sessao.id}
+                />
+              );
+            })}
+          </>
+        )}
         {selectedIndex === 6 &&
           (ofertas.length === 0 ? (
             <p className="no-profissional">Nenhuma oferta cadastrado.</p>

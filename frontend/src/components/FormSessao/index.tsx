@@ -115,6 +115,7 @@ export function FormSessao() {
         <input
           type="date"
           id="data_inicio"
+          min={new Date().toISOString().split('T')[0]}
           value={data}
           onChange={e => {
             setData(e.target.value);

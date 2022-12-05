@@ -28,11 +28,13 @@
   flex-direction: column;
 }
 
-.container-form form label {
+.container-form form label,
+.content__container label {
   margin: 0.8rem 6.2rem 0;
 }
 
 .container-form form input,
+.content__container input,
 InputMask,
 select,
 textarea {
@@ -54,6 +56,8 @@ textarea {
   font-size: 1.4rem;
 }
 .container-form form label,
+.content__container input,
+.content__container label,
 input,
 select,
 InputMask,
