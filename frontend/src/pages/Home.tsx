@@ -40,8 +40,19 @@ export function Home() {
 
   const [openModalVoucher, setOpenModalVoucher] = useState(false);
   const handleOpenModalVoucher = () => setOpenModalVoucher(true);
-  const handleCloseModalVoucher = () => setOpenModalVoucher(false);
-  const [nome, setNome] = useState(''); //Nome do cliente
+  const handleCloseModalVoucher = () => {
+    setOpenModalVoucher(false);
+    handleListItemClick(1);
+    setOfertasSelecionadas([]);
+    setDescontos([]);
+    setDescontoTotal(0);
+    setValorTotal(0);
+  };
+  const [nome, setNome] = useState('');
+  const [categoriaCliente, setCategoriaCliente] = useState('adulto');
+  const [formaPagamento, setFormaPagamento] = useState('credito'); //Nome do cliente
+  const [descontos, setDescontos] = useState<any[]>([]);
+  const [descontoTotal, setDescontoTotal] = useState(0);
 
   const [filmes, setFilmes] = useState<any[]>([]);
   const [sessoes, setSessoes] = useState<any[]>([]);
@@ -102,7 +113,6 @@ export function Home() {
     getOfertas();
     handleListItemClick(6);
   };
-
   const opComprarOferta = (oferta_compra: Oferta, op: boolean) => {
     if (!op) {
       //Retirar
@@ -117,6 +127,45 @@ export function Home() {
       ]);
     }
   };
+  const getDescontoValor = () => {
+    var listDesconto = [];
+    var somatorioDesconto = 0;
+    if (formaPagamento == 'credito' && categoriaCliente != 'flamenguista') {
+      //Mais 10% sobre o valor do ingresso
+      listDesconto.push({
+        nome: 'Pagamento no crédito + 10%',
+        valor: sessaoSelect.valor * 0.1,
+      });
+      somatorioDesconto += sessaoSelect.valor * 0.1 * 1;
+    }
+
+    if (categoriaCliente == 'flamenguista') {
+      //Valor do ingresso igual a 0
+      listDesconto.push({
+        nome: 'Flamenguista não paga nada',
+        valor: -1 * sessaoSelect.valor,
+      });
+      somatorioDesconto += -1 * sessaoSelect.valor;
+    } else if (categoriaCliente == 'infantil') {
+      //só paga 25% do valor do ingresso
+      listDesconto.push({
+        nome: 'Infantil paga apenas 25%',
+        valor: -1 * (sessaoSelect.valor * 0.75),
+      });
+      somatorioDesconto += -1 * (sessaoSelect.valor * 0.75);
+    } else if (categoriaCliente == 'estudante' || categoriaCliente == 'idoso') {
+      //Só paga 50% do valor do ingresso
+      listDesconto.push({
+        nome: 'Meia entrada',
+        valor: -1 * (sessaoSelect.valor * 0.5),
+      });
+      somatorioDesconto += -1 * (sessaoSelect.valor * 0.5);
+    }
+
+    console.log(somatorioDesconto, listDesconto);
+    setDescontos(listDesconto);
+    setDescontoTotal(somatorioDesconto);
+  };
 
   const getFilmes = () => {
     api
@@ -128,7 +177,6 @@ export function Home() {
         alert('Erro ao listar filmes.');
       });
   };
-
   const getSessoes = () => {
     let idFilmeSelecionado = filmeSelect?.id ? filmeSelect?.id : 0;
     api
@@ -140,7 +188,6 @@ export function Home() {
         alert('Erro ao listar sessoes.');
       });
   };
-
   const getOfertas = () => {
     api
       .get('item')
@@ -151,7 +198,6 @@ export function Home() {
         alert('Erro ao listar filmes.');
       });
   };
-
   function handleCreateClienteCompra(e: FormEvent) {
     e.preventDefault();
     let itemsComprados: any[] = [];
@@ -170,11 +216,12 @@ export function Home() {
       })
       .then(() => {
         alert('Compra realizada com sucesso');
+        getDescontoValor();
         handleCloseModalCliente();
         handleOpenModalVoucher();
       })
-      .catch(() => {
-        alert('Erro no cadastro, tente novamente!');
+      .catch(err => {
+        alert(err.response.data.message);
       });
   }
   return (
@@ -328,13 +375,23 @@ export function Home() {
               }}
             />
             <label htmlFor="Pagamento">Forma de Pagamento</label>
-            <select id="Pagamento">
+            <select
+              id="Pagamento"
+              onChange={e => {
+                setFormaPagamento(e.target.value);
+              }}
+            >
               <option value="credito">Crédito</option>
               <option value="debito">Debito</option>
               <option value="dinheiro">Dinheiro</option>
             </select>
             <label htmlFor="cliente-categoria">Categoria do cliente</label>
-            <select id="cliente-categoria">
+            <select
+              id="cliente-categoria"
+              onChange={e => {
+                setCategoriaCliente(e.target.value);
+              }}
+            >
               <option value="adulto">adulto</option>
               <option value="estudante">estudante</option>
               <option value="infantil">infantil</option>
@@ -378,10 +435,23 @@ export function Home() {
                 </div>
               );
             })}
+            {descontos.map(desc => {
+              return (
+                <div className="itens-compra">
+                  <p>{desc.nome}</p> <p>{desc.valor}</p>
+                </div>
+              );
+            })}
           </div>
           <div className="container-valor-voucher">
             <p>
-              Total <span className="valor">R$ {valorTotal}</span>
+              Total{' '}
+              <span className="valor">
+                R${' '}
+                {valorTotal + descontoTotal < 0
+                  ? 0
+                  : valorTotal + descontoTotal}
+              </span>
             </p>
           </div>
 
