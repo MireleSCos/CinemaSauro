@@ -151,7 +151,7 @@ export function Home() {
     } else if (categoriaCliente == 'infantil') {
       //só paga 25% do valor do ingresso
       listDesconto.push({
-        nome: 'Infantil paga apenas 25%',
+        nome: 'Infantil paga apenas 25% do ingresso',
         valor: -1 * (sessaoSelect.valor * 0.75),
       });
       somatorioDesconto += -1 * (sessaoSelect.valor * 0.75);
@@ -321,46 +321,47 @@ export function Home() {
 
         {selectedIndex === 3 && <FormFilme />}
         {selectedIndex === 4 && <FormSessao />}
-        {selectedIndex === 5 && sessoes.length === 0 ? (
-          <div>
-            <label htmlFor="data_sessao">Data da Sessão</label>
-            <input
-              type="date"
-              id="data_sessao"
-              min={new Date().toISOString().split('T')[0]}
-              value={dataSessao}
-              onChange={e => {
-                setDataSessao(e.target.value);
-              }}
-            />
-            <p className="no-profissional">
-              Nenhuma sessao cadastrado para essa data.
-            </p>
-          </div>
-        ) : (
-          <>
-            <label htmlFor="data_sessao">Data da Sessão</label>
-            <input
-              type="date"
-              id="data_sessao"
-              min={new Date().toISOString().split('T')[0]}
-              value={dataSessao}
-              onChange={e => {
-                setDataSessao(e.target.value);
-              }}
-            />
-            {sessoes.map((sessao: Sessao) => {
-              return (
-                <CardSessao
-                  sessao={sessao}
-                  filme={filmeSelect}
-                  fcompra={opComprarSessaoListOfertas}
-                  key={sessao.id}
-                />
-              );
-            })}
-          </>
-        )}
+        {selectedIndex === 5 &&
+          (sessoes.length === 0 ? (
+            <>
+              <label htmlFor="data_sessao">Data da Sessão</label>
+              <input
+                type="date"
+                id="data_sessao"
+                min={new Date().toISOString().split('T')[0]}
+                value={dataSessao}
+                onChange={e => {
+                  setDataSessao(e.target.value);
+                }}
+              />
+              <p className="no-profissional">
+                Nenhuma sessao cadastrado para essa data.
+              </p>
+            </>
+          ) : (
+            <>
+              <label htmlFor="data_sessao">Data da Sessão</label>
+              <input
+                type="date"
+                id="data_sessao"
+                min={new Date().toISOString().split('T')[0]}
+                value={dataSessao}
+                onChange={e => {
+                  setDataSessao(e.target.value);
+                }}
+              />
+              {sessoes.map((sessao: Sessao) => {
+                return (
+                  <CardSessao
+                    sessao={sessao}
+                    filme={filmeSelect}
+                    fcompra={opComprarSessaoListOfertas}
+                    key={sessao.id}
+                  />
+                );
+              })}
+            </>
+          ))}
         {selectedIndex === 6 &&
           (ofertas.length === 0 ? (
             <p className="no-profissional">Nenhuma oferta cadastrado.</p>
