@@ -79,6 +79,7 @@ export function Home() {
     hora: '',
     salaid: 0,
     valor: 0,
+    livre: false,
   });
   const [ofertasSelecionadas, setOfertasSelecionadas] = useState<any[]>([]);
   const [valorTotal, setValorTotal] = useState(0);

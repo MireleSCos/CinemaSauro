@@ -12,6 +12,7 @@ export interface Sessao {
   data: Date;
   hora: String;
   valor: number;
+  livre: boolean;
 }
 
 interface SessaoItemProps {
@@ -31,6 +32,7 @@ export function CardSessao({ sessao, filme, fcompra }: SessaoItemProps) {
               <h2>{filme.nome}</h2>
               <h3>Sala {sessao.salaid}</h3>
             </div>
+            {!sessao.livre && <p className="text-is-estreia">Lotado</p>}
           </footer>
         </div>
         <div className="bio">
@@ -46,15 +48,16 @@ export function CardSessao({ sessao, filme, fcompra }: SessaoItemProps) {
               <span className="valor">R$ {sessao.valor}</span>
             </p>
           </div>
-
-          <button
-            className="btn-comprar"
-            onClick={e => {
-              fcompra(sessao);
-            }}
-          >
-            Finalizar compra
-          </button>
+          {sessao.livre && (
+            <button
+              className="btn-comprar"
+              onClick={e => {
+                fcompra(sessao);
+              }}
+            >
+              Finalizar compra
+            </button>
+          )}
         </div>
       </div>
     </div>
