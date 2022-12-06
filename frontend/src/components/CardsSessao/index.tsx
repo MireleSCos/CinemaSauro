@@ -36,7 +36,7 @@ export function CardSessao({ sessao, filme, fcompra }: SessaoItemProps) {
           </footer>
         </div>
         <div className="bio">
-          <p>Data: {sessao.data}</p>
+          <p>Data: {new Date(sessao.data).toLocaleString().split(' ')[0]}</p>
           <p>Horario: {sessao.hora}</p>
         </div>
       </div>
