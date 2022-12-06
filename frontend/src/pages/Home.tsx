@@ -487,7 +487,7 @@ export function Home() {
             {descontos.map(desc => {
               return (
                 <div className="itens-compra">
-                  <p>{desc.nome}</p> <p>{desc.valor}</p>
+                  <p>{desc.nome}</p> <p>{desc.valor.toFixed(2)}</p>
                 </div>
               );
             })}

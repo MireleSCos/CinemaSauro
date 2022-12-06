@@ -31,6 +31,9 @@ export function FormSessao({ fback }: formProps) {
       .get('filme')
       .then(response => {
         setFilmes(response.data);
+        if (response.data?.length > 0) {
+          setFilmeId(response.data[0].id);
+        }
       })
       .catch(() => {
         alert('Erro ao listar profissionais.');
@@ -39,6 +42,9 @@ export function FormSessao({ fback }: formProps) {
       .get('room')
       .then(response => {
         setSalas(response.data);
+        if (response.data?.length > 0) {
+          setSalaId(response.data[0].id);
+        }
       })
       .catch(() => {
         alert('Erro ao listar profissionais.');
@@ -90,7 +96,7 @@ export function FormSessao({ fback }: formProps) {
             handleSalaId(e.target.value);
           }}
         >
-          {salas.map((sala: Sala) => {
+          {salas.map((sala: Sala, index) => {
             return (
               <option key={sala.id} value={sala.id}>
                 Sala {sala.id}

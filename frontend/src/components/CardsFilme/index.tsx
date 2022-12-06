@@ -39,7 +39,8 @@ export function CardsFilmes({ filme, fcompra }: FilmeItemProps) {
           <p>Censura: {filme.censura}</p>
           <p>Categora: {filme.categoria}</p>
           <p>Duração: {filme.duracao}</p>
-          <p>empresa: {filme.empresa}</p>
+          <p>Empresa: {filme.empresa}</p>
+          {filme.isnacional && <p>Nacional</p>}
         </div>
       </div>
       <div id="submit">

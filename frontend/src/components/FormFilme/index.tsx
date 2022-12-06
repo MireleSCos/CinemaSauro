@@ -156,20 +156,20 @@ export function FormFilme({ fback }: formProps) {
           }}
         />
         <label htmlFor="Estreia">Estreia</label>
-        <Switch
+        <input
+          type="checkbox"
           id="Estreia"
           className="input-switch"
           checked={isEstreia}
           onChange={handleEstreia}
-          inputProps={{ 'aria-label': 'controlled' }}
         />
         <label htmlFor="Nacional">Nacional</label>
-        <Switch
+        <input
+          type="checkbox"
           id="Nacional"
           className="input-switch"
           checked={isNacional}
           onChange={handleNacional}
-          inputProps={{ 'aria-label': 'controlled' }}
         />
         <div id="submit">
           <div id="content-submit">
