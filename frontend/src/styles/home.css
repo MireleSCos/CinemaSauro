@@ -119,6 +119,12 @@ main {
   width: 20%;
 }
 
+.label-data_sessao {
+  color: #000000 !important;
+  font-weight: 500 !important;
+  font-size: 2rem !important;
+}
+
 .container-btn button {
   font-family: 'Archivo';
   font-weight: 600;

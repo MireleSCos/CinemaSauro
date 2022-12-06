@@ -44,6 +44,8 @@ export function Home() {
     setOpenModalVoucher(false);
     handleListItemClick(1);
     setOfertasSelecionadas([]);
+    setCategoriaCliente('adulto');
+    setFormaPagamento('credito');
     setDescontos([]);
     setDescontoTotal(0);
     setValorTotal(0);
@@ -52,7 +54,7 @@ export function Home() {
   const [categoriaCliente, setCategoriaCliente] = useState('adulto');
   const [formaPagamento, setFormaPagamento] = useState('credito'); //Nome do cliente
   const [descontos, setDescontos] = useState<any[]>([]);
-  const [descontoTotal, setDescontoTotal] = useState(0);
+  const [descontoTotal, setDescontoTotal] = useState<number>(0);
 
   const [filmes, setFilmes] = useState<any[]>([]);
   const [sessoes, setSessoes] = useState<any[]>([]);
@@ -82,13 +84,22 @@ export function Home() {
     livre: false,
   });
   const [ofertasSelecionadas, setOfertasSelecionadas] = useState<any[]>([]);
-  const [valorTotal, setValorTotal] = useState(0);
+  const [valorTotal, setValorTotal] = useState<number>(0);
 
   const [selectedIndex, setSelectedIndex] = useState<number>(1);
 
   useEffect(() => {
     getFilmes();
   }, [selectedIndex]);
+
+  useEffect(() => {
+    if (!openModalVoucher) {
+      setDescontos([]);
+      setDescontoTotal(0);
+      setCategoriaCliente('adulto');
+      setFormaPagamento('credito');
+    }
+  }, [openModalVoucher]);
 
   useEffect(() => {
     getSessoes();
@@ -104,6 +115,7 @@ export function Home() {
 
   //Selecionar opção do header
   const handleListItemClick = (index: number) => {
+    setDataSessao('');
     setSelectedIndex(index);
   };
   const opComprarFilmeListSessions = (filme: Filme) => {
@@ -133,36 +145,42 @@ export function Home() {
   const getDescontoValor = () => {
     var listDesconto = [];
     var somatorioDesconto = 0;
+    var localSessaoValor = Number(sessaoSelect.valor);
     if (formaPagamento == 'credito' && categoriaCliente != 'flamenguista') {
       //Mais 10% sobre o valor do ingresso
       listDesconto.push({
         nome: 'Pagamento no crédito + 10%',
-        valor: sessaoSelect.valor * 0.1,
+        valor: localSessaoValor * 0.1,
       });
-      somatorioDesconto += sessaoSelect.valor * 0.1 * 1;
+      somatorioDesconto += localSessaoValor * 0.1 * 1;
     }
 
     if (categoriaCliente == 'flamenguista') {
       //Valor do ingresso igual a 0
       listDesconto.push({
         nome: 'Flamenguista não paga nada',
-        valor: -1 * sessaoSelect.valor,
+        valor: -1 * localSessaoValor,
       });
-      somatorioDesconto += -1 * sessaoSelect.valor;
+      somatorioDesconto += -1 * localSessaoValor;
     } else if (categoriaCliente == 'infantil') {
       //só paga 25% do valor do ingresso
       listDesconto.push({
         nome: 'Infantil paga apenas 25% do ingresso',
-        valor: -1 * (sessaoSelect.valor * 0.75),
+        valor: -1 * (localSessaoValor * 0.75),
       });
-      somatorioDesconto += -1 * (sessaoSelect.valor * 0.75);
+      somatorioDesconto += -1 * (localSessaoValor * 0.75);
     } else if (categoriaCliente == 'estudante' || categoriaCliente == 'idoso') {
       //Só paga 50% do valor do ingresso
       listDesconto.push({
         nome: 'Meia entrada',
-        valor: -1 * (sessaoSelect.valor * 0.5),
+        valor: -1 * (localSessaoValor * 0.5),
       });
-      somatorioDesconto += -1 * (sessaoSelect.valor * 0.5);
+      somatorioDesconto += -1 * (localSessaoValor * 0.5);
+    } else {
+      listDesconto.push({
+        nome: 'Adulto sem desconto',
+        valor: 0,
+      });
     }
 
     console.log(somatorioDesconto, listDesconto);
@@ -325,7 +343,9 @@ export function Home() {
         {selectedIndex === 5 &&
           (sessoes.length === 0 ? (
             <>
-              <label htmlFor="data_sessao">Data da Sessão</label>
+              <label className="label-data_sessao" htmlFor="data_sessao">
+                Data da Sessão
+              </label>
               <input
                 type="date"
                 id="data_sessao"
@@ -341,7 +361,9 @@ export function Home() {
             </>
           ) : (
             <>
-              <label htmlFor="data_sessao">Data da Sessão</label>
+              <label className="label-data_sessao" htmlFor="data_sessao">
+                Data da Sessão
+              </label>
               <input
                 type="date"
                 id="data_sessao"
@@ -472,12 +494,12 @@ export function Home() {
           </div>
           <div className="container-valor-voucher">
             <p>
-              Total{' '}
+              Total
               <span className="valor">
-                R${' '}
+                R$
                 {valorTotal + descontoTotal < 0
                   ? 0
-                  : valorTotal + descontoTotal}
+                  : Number(valorTotal) + Number(descontoTotal)}
               </span>
             </p>
           </div>
