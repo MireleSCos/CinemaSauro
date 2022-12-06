@@ -11,7 +11,11 @@ export interface Sala {
   capacidade: number;
 }
 
-export function FormSessao() {
+interface formProps {
+  fback: Function;
+}
+
+export function FormSessao({ fback }: formProps) {
   const [salaId, setSalaId] = useState(1);
   const [filmeId, setFilmeId] = useState(1);
   const [valor, setValor] = useState(0);
@@ -60,7 +64,7 @@ export function FormSessao() {
       })
       .then(() => {
         alert('Cadastro realizado com sucesso!');
-
+        fback(1);
         navigation('/');
       })
       .catch(err => {

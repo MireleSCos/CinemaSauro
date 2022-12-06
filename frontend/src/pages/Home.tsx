@@ -320,8 +320,8 @@ export function Home() {
             </>
           ))}
 
-        {selectedIndex === 3 && <FormFilme />}
-        {selectedIndex === 4 && <FormSessao />}
+        {selectedIndex === 3 && <FormFilme fback={handleListItemClick} />}
+        {selectedIndex === 4 && <FormSessao fback={handleListItemClick} />}
         {selectedIndex === 5 &&
           (sessoes.length === 0 ? (
             <>

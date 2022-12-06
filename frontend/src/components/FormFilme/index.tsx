@@ -10,7 +10,10 @@ import { Filme } from '../CardsFilme';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-export function FormFilme() {
+interface formProps {
+  fback: Function;
+}
+export function FormFilme({ fback }: formProps) {
   const navigation = useNavigate();
 
   const [nome, setNome] = useState('');
@@ -54,7 +57,7 @@ export function FormFilme() {
       })
       .then(() => {
         alert('Cadastro realizado com sucesso!');
-
+        fback(1);
         navigation('/');
       })
       .catch(() => {
